@@ -11,9 +11,11 @@ import type { Treatment } from "../data/content";
 export default function TreatmentCard({
   t,
   onClick,
+  featured,
 }: {
   t: Treatment;
   onClick?: () => void;
+  featured?: boolean;
 }) {
   const interactive = !!onClick;
 
@@ -47,8 +49,9 @@ export default function TreatmentCard({
     </>
   );
 
-  const base =
-    "flex h-full w-full flex-col items-center rounded-2xl border border-slate-200 bg-white p-5 text-center";
+  const base = `flex h-full w-full flex-col items-center rounded-2xl border border-slate-200 bg-white p-5 text-center ${
+    featured ? "justify-start" : "justify-center"
+  }`;
 
   if (interactive) {
     return (
