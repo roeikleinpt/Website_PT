@@ -9,8 +9,35 @@ import { asset } from "../basePath";
 import { treatments } from "../data/content";
 import type { Treatment } from "../data/content";
 
+// צ'יפ תסמין (ירוק מרווה) — לפריטים קצרים.
+function Chip({ text }: { text: string }) {
+  return (
+    <span
+      className="inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm"
+      style={{ background: "#edf4ef", borderColor: "#c6dccd", color: "#1d4165" }}
+    >
+      <span className="h-1.5 w-1.5 rounded-full" style={{ background: "#5b9e7f" }} />
+      {text}
+    </span>
+  );
+}
+
+// פריט רשימה (וי + טקסט) — לפריטים ארוכים.
+function ListItem({ text }: { text: string }) {
+  return (
+    <div className="flex items-start gap-2 py-1 text-sm leading-6 text-slate-700">
+      <Icon name="check" className="mt-1 h-4 w-4 shrink-0" style={{ color: "#5b9e7f" }} />
+      <span>{text}</span>
+    </div>
+  );
+}
+
 export default function Treatments() {
   const [active, setActive] = useState<Treatment | null>(null);
+
+  // האם לכרטיס יש תוכן לפופ-אפ (ולכן הוא לחיץ)
+  const hasPopup = (t: Treatment) =>
+    !!(t.symptomGroups?.length || t.symptoms?.length);
 
   // סגירה ב-Esc + נעילת גלילת הרקע כשהפופ-אפ פתוח
   useEffect(() => {
@@ -27,29 +54,21 @@ export default function Treatments() {
 
   return (
     <>
-      <div className="mt-12 space-y-6">
-        {/* שורה ראשונה — שני הכרטיסים עם הטקסט */}
-        <div className="grid gap-6 sm:grid-cols-2">
-          {treatments.slice(0, 2).map((t, i) => (
-            <Reveal key={t.title} delay={i * 90}>
-              <TreatmentCard
-                t={t}
-                onClick={t.symptoms?.length ? () => setActive(t) : undefined}
-              />
-            </Reveal>
-          ))}
-        </div>
-        {/* שאר הכרטיסים — שתי שורות של שלושה */}
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3">
-          {treatments.slice(2).map((t, i) => (
-            <Reveal key={t.title} delay={i * 90}>
-              <TreatmentCard
-                t={t}
-                onClick={t.symptoms?.length ? () => setActive(t) : undefined}
-              />
-            </Reveal>
-          ))}
-        </div>
+      {/* רשת אחת — הכרטיס ה-featured (בריאות הגבר) גדול ותופס שתי שורות בדסקטופ */}
+      <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+        {treatments.map((t, i) => (
+          <Reveal
+            key={t.title}
+            delay={i * 90}
+            className={t.featured ? "md:row-span-2" : ""}
+          >
+            <TreatmentCard
+              t={t}
+              featured={t.featured}
+              onClick={hasPopup(t) ? () => setActive(t) : undefined}
+            />
+          </Reveal>
+        ))}
       </div>
 
       {/* פופ-אפ התסמינים */}
@@ -63,7 +82,7 @@ export default function Treatments() {
         >
           <div className="absolute inset-0 bg-slate-900/55" />
           <div
-            className="relative w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl sm:p-7"
+            className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl sm:p-7"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -92,28 +111,41 @@ export default function Treatments() {
               <h3 className="text-lg font-bold text-slate-900">{active.title}</h3>
             </div>
 
-            {active.symptoms && active.symptoms.length > 0 && (
-              <>
-                <p className="mt-5 text-sm text-slate-500">
-                  דוגמאות למצבים שניתנים לשיפור עם טיפול פיזיותרפי מותאם
-                </p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {active.symptoms.map((s) => (
-                    <span
-                      key={s}
-                      className="inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm"
-                      style={{ background: "#edf4ef", borderColor: "#c6dccd", color: "#1d4165" }}
-                    >
-                      <span
-                        className="h-1.5 w-1.5 rounded-full"
-                        style={{ background: "#5b9e7f" }}
-                      />
-                      {s}
-                    </span>
-                  ))}
-                </div>
-              </>
+            {active.popupIntro && (
+              <p className="mt-5 whitespace-pre-line text-sm leading-6 text-slate-500">
+                {active.popupIntro}
+              </p>
             )}
+
+            {active.symptomGroups
+              ? active.symptomGroups.map((g) => (
+                  <div key={g.category}>
+                    <p className="mb-2 mt-4 flex items-center gap-2 text-xs font-medium text-teal-500">
+                      {g.category}
+                      <span className="h-px flex-1 bg-slate-100" />
+                    </p>
+                    {active.popupStyle === "list" ? (
+                      <div>
+                        {g.items.map((s) => (
+                          <ListItem key={s} text={s} />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex flex-wrap gap-2">
+                        {g.items.map((s) => (
+                          <Chip key={s} text={s} />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))
+              : active.symptoms && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {active.symptoms.map((s) => (
+                      <Chip key={s} text={s} />
+                    ))}
+                  </div>
+                )}
 
             <a
               href="#contact"
