@@ -4,7 +4,7 @@ import type { NextConfig } from "next";
 // משתנה הסביבה GITHUB_PAGES מופעל רק בבילד של ה-CI (ראו .github/workflows/deploy.yml),
 // כך שפיתוח מקומי (next dev) ממשיך לרוץ על הנתיב הרגיל "/".
 const isGithubPages = process.env.GITHUB_PAGES === "true";
-const repoName = "roei";
+const repoName = "Website_PT";
 const basePath = isGithubPages ? `/${repoName}` : "";
 
 const nextConfig: NextConfig = {
