@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-heebo);
+}
+
+/*
+ * סכמת צבעים בהשראת danrixphysio.com + צבע המותג של הלוגו (RK = #1D4165 / #25486A):
+ * כחול נייבי עמוק + תכלת-פלדה + רקע לבן + סקשנים בתכלת בהיר.
+ * שמות הטוקנים של Tailwind (teal/emerald/slate) נדרסים כך שכל הרכיבים מאמצים את הסכמה.
+ */
+@theme {
+  /* מותג — נייבי */
+  --color-teal-50: #eef5fc; /* תכלת בהיר מאוד (משטחים) */
+  --color-teal-100: #d6e6f5;
+  --color-teal-200: #b3d0ea;
+  --color-teal-500: #2f6196; /* תכלת-פלדה (אקסנט, קישורים, eyebrow) */
+  --color-teal-600: #1d4165; /* ראשי — נייבי הלוגו */
+  --color-teal-700: #0c2438; /* נייבי כהה מאוד (פס עליון, כפתורים) */
+  --color-emerald-100: #d6e6f5;
+  --color-emerald-500: #2f6196;
+
+  /* נייטרלים — אפורים בגוון נייבי קריר */
+  --color-slate-50: #eef5fc; /* רקע סקשן בתכלת */
+  --color-slate-100: #e7eef5;
+  --color-slate-200: #dbe5ee; /* גבולות */
+  --color-slate-300: #c3d2e0;
+  --color-slate-400: #8aa0b3; /* טקסט מעומעם */
+  --color-slate-500: #5f7488;
+  --color-slate-600: #44576b; /* טקסט גוף */
+  --color-slate-700: #1e3a52;
+  --color-slate-900: #102a43; /* כותרות נייבי עמוק */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #ffffff;
+  color: #44576b;
+}
+
+/* אפקט כפתורים בסגנון Dan Rix: בריחוף הכפתור "מתהפך" (מילוי <-> מסגרת)
+   והטקסט מודגש; בלחיצה הכפתור גדל מעט (~6%). המעבר חלק. */
+.btn-press {
+  transition: transform 0.18s ease, background-color 0.2s ease,
+    border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-press:hover {
+  font-weight: 700;
+}
+.btn-press:active {
+  transform: scale(1.06);
+}
