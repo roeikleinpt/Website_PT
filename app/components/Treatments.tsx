@@ -13,10 +13,9 @@ import type { Treatment } from "../data/content";
 function Chip({ text }: { text: string }) {
   return (
     <span
-      className="inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm"
+      className="inline-flex items-center rounded-full border px-3.5 py-1.5 text-sm"
       style={{ background: "#edf4ef", borderColor: "#c6dccd", color: "#1d4165" }}
     >
-      <span className="h-1.5 w-1.5 rounded-full" style={{ background: "#5b9e7f" }} />
       {text}
     </span>
   );
