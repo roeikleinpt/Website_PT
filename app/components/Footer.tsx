@@ -61,6 +61,10 @@ export default function Footer() {
               <Icon name="whatsapp" className="h-4 w-4" />
               וואטסאפ
             </a>
+            <span className="flex items-center gap-2">
+              <Icon name="mapPin" className="h-4 w-4" />
+              {site.locations}
+            </span>
           </div>
 
           <p className="border-t border-white/10 pt-6 text-sm text-teal-100/80">

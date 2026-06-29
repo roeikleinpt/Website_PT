@@ -43,12 +43,6 @@ export default function Home() {
                 >
                   לקביעת פגישת אבחון
                 </a>
-                <a
-                  href="#treatments"
-                  className="btn-press rounded-full border-2 border-teal-700 bg-white px-7 py-3.5 font-semibold text-teal-700 hover:bg-teal-700 hover:text-white"
-                >
-                  למידע נוסף
-                </a>
               </div>
             </Reveal>
 
@@ -159,7 +153,7 @@ export default function Home() {
         <Container>
           <Reveal className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">קצת עליי</h2>
-            <div className="mt-8 space-y-5 text-lg leading-8 text-slate-600">
+            <div className="mt-8 text-lg leading-8 text-slate-600">
               {aboutParagraphs.map((p) => (
                 <p key={p}>{p}</p>
               ))}
@@ -209,6 +203,11 @@ export default function Home() {
 
             <Reveal delay={120}>
               <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+                <p className="mb-5 text-base leading-7 text-slate-600">
+                  מעדיפים שאחזור אליכם? השאירו פרטים באופן דיסקרטי, ובחרו איך נוח
+                  לכם שאצור קשר: טלפון, וואטסאפ או אימייל. אחזור אליכם בהתאם לדרך
+                  שבחרתם, לתיאום שיחה או פגישת אבחון.
+                </p>
                 <ContactForm />
               </div>
             </Reveal>

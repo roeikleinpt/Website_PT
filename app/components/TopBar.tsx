@@ -21,6 +21,10 @@ export default function TopBar() {
             <Icon name="mail" className="h-4 w-4" />
             <span dir="ltr">{site.email}</span>
           </a>
+          <span className="flex items-center gap-2">
+            <Icon name="mapPin" className="h-4 w-4" />
+            {site.locationsShort}
+          </span>
         </div>
       </Container>
     </div>

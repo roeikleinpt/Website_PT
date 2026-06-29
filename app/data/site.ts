@@ -9,6 +9,8 @@ export const site = {
   phoneHref: "tel:+972526171312",
   whatsappHref: "https://wa.me/972526171312",
   email: "RoeiKleinPT@gmail.com",
+  locationsShort: "חיפה · גבת",
+  locations: "חיפה (מרכז רפואי קולוני, מדיקס) · קיבוץ גבת (סינרגיה פיזיותרפיה)",
   stats: [
     { value: "2,000+", label: "מטופלים בתחום האורתופדיה" },
     { value: "300+", label: "מטופלים בתחום רצפת האגן" },
