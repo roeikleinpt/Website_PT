@@ -1,8 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Icon } from "./Icon";
 import Container from "./Container";
 import HexPattern from "./HexPattern";
-import { navLinks } from "../data/nav";
+import { homeNavLinks, pageLinks } from "../data/nav";
 import { site } from "../data/site";
 import { asset } from "../basePath";
 
@@ -25,7 +26,7 @@ export default function Footer() {
 
       <Container className="relative py-14">
         <div className="flex flex-col items-center gap-6 text-center">
-          <a href="#hero" className="flex items-center">
+          <Link href="/" className="flex items-center">
             <Image
               src={asset("/logo-silver.png")}
               alt="רועי קליין — פיזיותרפיסט"
@@ -33,13 +34,26 @@ export default function Footer() {
               height={110}
               className="h-16 w-auto max-w-none shrink-0 sm:h-[99px]"
             />
-          </a>
+          </Link>
 
           <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-            {navLinks.map((link) => (
-              <a key={link.id} href={link.href} className="text-sm text-teal-100 hover:text-white">
+            {homeNavLinks.map((link) => (
+              <Link
+                key={link.id}
+                href={`/${link.href}`}
+                className="text-sm text-teal-100 hover:text-white"
+              >
+                {link.longLabel ?? link.label}
+              </Link>
+            ))}
+            {pageLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm text-teal-100 hover:text-white"
+              >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
 

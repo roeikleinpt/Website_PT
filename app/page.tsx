@@ -5,6 +5,8 @@ import Reveal from "./components/Reveal";
 import Faq from "./components/Faq";
 import ContactForm from "./components/ContactForm";
 import Treatments from "./components/Treatments";
+import Testimonials from "./components/Testimonials";
+import JsonLd from "./components/JsonLd";
 import { site } from "./data/site";
 import { asset } from "./basePath";
 import { symptoms, approachSteps, aboutParagraphs } from "./data/content";
@@ -12,6 +14,7 @@ import { symptoms, approachSteps, aboutParagraphs } from "./data/content";
 export default function Home() {
   return (
     <>
+      <JsonLd />
       {/* ===== Hero ===== */}
       <section id="hero" className="scroll-mt-4 pt-4 pb-16 sm:pt-6 sm:pb-24">
         <Container className="relative">
@@ -162,6 +165,9 @@ export default function Home() {
         </Container>
       </section>
 
+      {/* ===== חוות דעת מטופלים ===== */}
+      <Testimonials />
+
       {/* ===== שאלות נפוצות ===== */}
       <section id="faq" className="scroll-mt-4 py-20 sm:py-24">
         <Container>
@@ -182,8 +188,10 @@ export default function Home() {
               <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
                 בואו נבין מה קורה
               </h2>
-              <p className="mt-4 text-lg leading-8 text-slate-600">כאב, מגבלה או תסמינים שמפריעים ביומיום לא חייבים להישאר סימן שאלה.
-בפגישת אבחון נבין יחד מה קורה, מה מקור הבעיה, ומה הדרך הנכונה לטפל בה.
+              <p className="mt-4 text-lg leading-8 text-slate-600">
+                כאב, מגבלה או תסמינים שפוגעים באיכות החיים לא צריכים להפוך לחלק
+                מהשגרה. בפגישת האבחון נבין יחד מה מקור הבעיה, נבנה תוכנית טיפול
+                ברורה ונבחר את הדרך הנכונה עבורך לחזור לתפקוד מיטבי.
               </p>
               <a
                 href={site.whatsappHref}
@@ -192,7 +200,7 @@ export default function Home() {
                 className="btn-press mt-8 inline-flex items-center gap-2 rounded-full bg-teal-700 px-7 py-3.5 font-semibold text-white ring-2 ring-inset ring-teal-700 hover:bg-white hover:text-teal-700"
               >
                 <Icon name="whatsapp" className="h-5 w-5" />
-                לקביעת תור בוואטסאפ
+                לקביעת פגישת אבחון
               </a>
               <div className="mt-6 flex items-center gap-4 text-sm text-slate-400">
                 <span className="h-px flex-1 bg-slate-200" />

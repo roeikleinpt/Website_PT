@@ -1,17 +1,52 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState, type ReactNode } from "react";
 import { Icon } from "./Icon";
 import Container from "./Container";
-import { navLinks } from "../data/nav";
+import { homeNavLinks, pageLinks } from "../data/nav";
 import { asset } from "../basePath";
+
+// קישור עוגן — מרנדר <a> בדף הבית (גלילה חלקה + scroll-spy) ו-<Link> בעמוד פנימי
+// (חזרה לדף הבית וגלילה לסקשן; Link מוסיף את ה-basePath).
+function SectionLink({
+  isHome,
+  href,
+  className,
+  onClick,
+  children,
+}: {
+  isHome: boolean;
+  href: string;
+  className?: string;
+  onClick?: () => void;
+  children: ReactNode;
+}) {
+  return isHome ? (
+    <a href={href} className={className} onClick={onClick}>
+      {children}
+    </a>
+  ) : (
+    <Link href={href} className={className} onClick={onClick}>
+      {children}
+    </Link>
+  );
+}
 
 export default function Header() {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("hero");
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  // מתוך דף הבית: עוגן רגיל (#about) — גלילה חלקה + scroll-spy.
+  // מתוך עמוד פנימי: "/#about" — חזרה לדף הבית וגלילה לסקשן (Link מוסיף basePath).
+  const anchorHref = (href: string) => (isHome ? href : `/${href}`);
 
   // המשקוף נחשף בגלילה כלפי מעלה ונעלם בגלילה כלפי מטה
   useEffect(() => {
@@ -29,7 +64,7 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // scroll-spy — הדגשת הטאב של הסקשן הנוכחי
+  // scroll-spy — הדגשת הטאב של הסקשן הנוכחי (רלוונטי רק בדף הבית)
   useEffect(() => {
     const sections = Array.from(document.querySelectorAll("section[id]"));
     if (!sections.length) return;
@@ -41,6 +76,17 @@ export default function Header() {
     return () => io.disconnect();
   }, []);
 
+  const logoImg = (
+    <Image
+      src={asset("/logo-rk.png")}
+      alt="רועי קליין — פיזיותרפיסט"
+      width={900}
+      height={300}
+      priority
+      className="h-[77px] w-auto max-w-none shrink-0 sm:h-[102px] lg:h-[88px]"
+    />
+  );
+
   return (
     <header
       className={`sticky top-0 z-50 bg-white transition-transform duration-300 ${
@@ -50,42 +96,43 @@ export default function Header() {
       <Container>
         <div className="flex h-24 flex-row-reverse items-center justify-between gap-4 sm:h-[120px] lg:flex-row">
 
-          {/* לוגו */}
-          <a href="#hero" className="flex items-center">
-            <Image
-              src={asset("/logo-rk.png")}
-              alt="רועי קליין — פיזיותרפיסט"
-              width={900}
-              height={300}
-              priority
-              className="h-[77px] w-auto max-w-none shrink-0 sm:h-[102px] lg:h-[88px]"
-            />
-          </a>
+          {/* לוגו — חוזר לראש דף הבית */}
+          {isHome ? (
+            <a href="#hero" className="flex items-center">
+              {logoImg}
+            </a>
+          ) : (
+            <Link href="/" className="flex items-center">
+              {logoImg}
+            </Link>
+          )}
 
           {/* ניווט דסקטופ */}
           <nav className="hidden items-center gap-1 lg:flex">
-            {navLinks.map((link) => (
-              <a
+            {homeNavLinks.map((link) => (
+              <SectionLink
                 key={link.id}
-                href={link.href}
+                isHome={isHome}
+                href={anchorHref(link.href)}
                 className={`rounded-lg px-3 py-2 text-sm font-medium transition-all ${
-                  active === link.id
+                  isHome && active === link.id
                     ? "font-bold text-teal-600"
                     : "text-slate-600 hover:font-bold hover:text-slate-900"
                 }`}
               >
                 {link.label}
-              </a>
+              </SectionLink>
             ))}
           </nav>
 
           {/* CTA דסקטופ */}
-          <a
-            href="#contact"
+          <SectionLink
+            isHome={isHome}
+            href={anchorHref("#contact")}
             className="btn-press hidden rounded-full bg-teal-700 px-6 py-3 text-sm font-semibold text-white ring-2 ring-inset ring-teal-700 hover:bg-white hover:text-teal-700 lg:inline-block"
           >
             קביעת תור
-          </a>
+          </SectionLink>
 
           {/* כפתור מובייל */}
           <button
@@ -105,27 +152,43 @@ export default function Header() {
         <div className="border-t border-slate-200 bg-white lg:hidden">
           <Container className="py-3">
             <nav className="flex flex-col gap-1">
-              {navLinks.map((link) => (
-                <a
+              {homeNavLinks.map((link) => (
+                <SectionLink
                   key={link.id}
-                  href={link.href}
+                  isHome={isHome}
+                  href={anchorHref(link.href)}
                   onClick={() => setMenuOpen(false)}
                   className={`rounded-lg px-3 py-2.5 text-base font-medium transition-all ${
-                    active === link.id
+                    isHome && active === link.id
                       ? "bg-teal-50 font-bold text-teal-600"
                       : "text-slate-700 hover:font-bold hover:bg-slate-100"
                   }`}
                 >
-                  {link.label}
-                </a>
+                  {link.longLabel ?? link.label}
+                </SectionLink>
               ))}
-              <a
-                href="#contact"
+
+              {/* עמודים פנימיים */}
+              <span className="my-1 h-px bg-slate-200" />
+              {pageLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="rounded-lg px-3 py-2.5 text-base font-medium text-slate-700 transition-all hover:font-bold hover:bg-slate-100"
+                >
+                  {link.label}
+                </Link>
+              ))}
+
+              <SectionLink
+                isHome={isHome}
+                href={anchorHref("#contact")}
                 onClick={() => setMenuOpen(false)}
                 className="btn-press mt-2 rounded-full bg-teal-700 px-4 py-2.5 text-center text-sm font-semibold text-white ring-2 ring-inset ring-teal-700 hover:bg-white hover:text-teal-700"
               >
                 קביעת תור
-              </a>
+              </SectionLink>
             </nav>
           </Container>
         </div>
