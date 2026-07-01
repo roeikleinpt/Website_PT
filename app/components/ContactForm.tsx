@@ -85,7 +85,7 @@ export default function ContactForm() {
         type="submit"
         className="btn-press w-full rounded-xl bg-teal-700 px-6 py-3 font-semibold text-white ring-2 ring-inset ring-teal-700 hover:bg-white hover:text-teal-700"
       >
-        השארת פרטים באופן דיסקרטי
+        שליחת פרטים
       </button>
     </form>
   );

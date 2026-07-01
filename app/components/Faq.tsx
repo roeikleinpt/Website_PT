@@ -36,7 +36,7 @@ export default function Faq() {
               }`}
             >
               <div className="overflow-hidden">
-                <p className="px-6 pb-5 leading-7 text-slate-600">{item.a}</p>
+                <p className="whitespace-pre-line px-6 pb-5 leading-7 text-slate-600">{item.a}</p>
               </div>
             </div>
           </div>
